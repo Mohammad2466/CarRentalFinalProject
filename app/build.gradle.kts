@@ -9,8 +9,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.carrentalfinalproject"
-        minSdkPreview = "VanillaIceCream"
-        targetSdkPreview = "VanillaIceCream"
+        minSdk = 28
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
