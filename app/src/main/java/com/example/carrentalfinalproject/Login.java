@@ -9,21 +9,29 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity {
+
+  // Deceleration
     private TextInputEditText edtEmail, edtPassword;
     private Button buttonLogin;
     private FirebaseAuth auth;
     private ProgressBar progrBar;
-    private TextView tvRegisterNow;
+    private TextView tv_signUp, tv_forgetPass;
+    private String textEmail, textPassword;
+    private String emailPattern = "[a-zA-Z0-9-_-]+@[a-z]+\\.+[a-z]+";
 
     @Override
     public void onStart() {
@@ -41,51 +49,62 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // EdgeToEdge.enable(this); // Ensure this method is defined or use proper edge-to-edge handling
         setContentView(R.layout.activity_login);
 
+        // Initialization
         auth = FirebaseAuth.getInstance();
         edtEmail = findViewById(R.id.email);
         edtPassword = findViewById(R.id.password);
         buttonLogin = findViewById(R.id.btn_login);
         progrBar = findViewById(R.id.progressbar);
-        tvRegisterNow = findViewById(R.id.registerNow);
+        tv_signUp = findViewById(R.id.tv_signUp);
+        tv_forgetPass = findViewById(R.id.tv_forget);
 
-        tvRegisterNow.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), Register.class);
+        // Action event for a sign-up text
+        tv_signUp.setOnClickListener(view -> {
+            Intent intent = new Intent(Login.this, Register.class);
             startActivity(intent);
             finish();
         });
 
+        // Action event for log-in button
         buttonLogin.setOnClickListener(view -> {
             progrBar.setVisibility(View.VISIBLE);
-            String email = String.valueOf(edtEmail.getText());
-            String password = String.valueOf(edtPassword.getText());
+            textEmail = String.valueOf(edtEmail.getText());
+            textPassword = String.valueOf(edtPassword.getText());
 
-            if (TextUtils.isEmpty(email)) {
-                progrBar.setVisibility(View.GONE);
-                Toast.makeText(Login.this, "Enter Email", Toast.LENGTH_SHORT).show();
-                return;
+            if (!TextUtils.isEmpty(textEmail)) {
+                if (textEmail.matches(emailPattern)){
+                    if (!TextUtils.isEmpty(textPassword)){
+                        logInUser();
+                    }else {
+                        edtPassword.setError("Password cannot be empty");
+                        progrBar.setVisibility(View.INVISIBLE);
+                        buttonLogin.setVisibility(View.VISIBLE);
+                    }
+                }else {
+                    edtEmail.setError("Enter a valid Email Address");
+                    progrBar.setVisibility(View.INVISIBLE);
+                    buttonLogin.setVisibility(View.VISIBLE);
+                }
+
+            }else{
+                edtEmail.setError("Email Address cannot be empty");
+                progrBar.setVisibility(View.INVISIBLE);
+                buttonLogin.setVisibility(View.VISIBLE);
             }
 
-            if (TextUtils.isEmpty(password)) {
-                progrBar.setVisibility(View.GONE);
-                Toast.makeText(Login.this, "Enter Password", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        });
 
-            auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(task -> {
-                        progrBar.setVisibility(View.GONE);
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(Login.this, "Authentication failed", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+
+        // Action event for forget password text
+        tv_forgetPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login.this, ForgetPassword.class);
+                startActivity(intent);
+                finish();
+            }
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -94,4 +113,30 @@ public class Login extends AppCompatActivity {
             return WindowInsetsCompat.CONSUMED;
         });
     }
+
+    private void logInUser() {
+        progrBar.setVisibility(View.VISIBLE);
+        buttonLogin.setVisibility(View.INVISIBLE);
+
+        auth.signInWithEmailAndPassword(textEmail, textPassword)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        Toast.makeText(Login.this, "Sign In successfully", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Login.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(Login.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        progrBar.setVisibility(View.INVISIBLE);
+                        buttonLogin.setVisibility(View.VISIBLE);
+                    }
+                });
+
+
+    }
+
 }

@@ -38,22 +38,20 @@ public class MainActivity extends AppCompatActivity {
 
         // Check if user is logged in, if not redirect to Login activity
         if (user == null) {
-            Intent intent = new Intent(getApplicationContext(), Login.class);
+            Intent intent = new Intent(MainActivity.this, Login.class);
             startActivity(intent);
             finish();
         } else {
             // Display user's email in the TextView
             textView.setText(user.getEmail());
         }
-
         // Set logout button click listener to sign out and redirect to Login activity
         button.setOnClickListener(view -> {
             FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(getApplicationContext(), Login.class);
+            Intent intent = new Intent(MainActivity.this, Login.class);
             startActivity(intent);
             finish();
         });
-
         // Handle window insets for edge-to-edge display
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
