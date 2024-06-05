@@ -15,4 +15,5 @@
     <string name="forget_password1"> FORGET PASSWORD</string>
     <string name="restart_password">Restart Password</string>
     <string name="back">Back</string>
+    <string name="view_items">View Items</string>
 </resources>
