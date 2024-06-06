@@ -3,6 +3,7 @@ package com.example.carrentalfinalproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -11,13 +12,18 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +34,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -38,7 +46,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity{
+
     private FirebaseAuth auth;
 
     private FirebaseUser user;
@@ -46,21 +55,40 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue queue;
     private List<Car> items = new ArrayList<>();
     private RecyclerView recycler;
+    private RecyclerViewAdapter itemAdapter;
+    SearchView searchView;
     private static final String BASE_URL = "http://192.168.0.108/json/view.php";
-
+    private static final String BASE_URL1 = "http://192.168.1.105/rest/view.php";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         // Assuming EdgeToEdge.enable(this) is a custom utility method
         EdgeToEdge.enable(this);
 
-        setContentView(R.layout.activity_main);
-
         queue = Volley.newRequestQueue(this);
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+        itemAdapter = new RecyclerViewAdapter(MainActivity.this, items);
+
+
+        // Set the searchView after setContentView
+        searchView = findViewById(R.id.searchView);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterText(newText);
+                return false;
+            }
+        });
 
         // Check if user is logged in, if not redirect to Login activity
         if (user == null) {
@@ -68,41 +96,66 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else {
-
             // Display user's email in the TextView
         }
-        // Set logout button click listener to sign out and redirect to Login activity
-       /* button.setOnClickListener(view -> {
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(MainActivity.this, Login.class);
-            startActivity(intent);
-            finish();
-        });*/
-        // Handle window insets for edge-to-edge display
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.navigation_home) {
+                // Handle home navigation
+                return true;
+            } else if (item.getItemId() == R.id.navigation_account) {
+                Intent intent = new Intent(MainActivity.this, MyAccount.class);
+                startActivity(intent);
+                finish();
+                return true;
+            } else if (item.getItemId() == R.id.searchNav){
+                Intent intent = new Intent(MainActivity.this, Search.class);
+                startActivity(intent);
+                finish();
+                return true;
+            }
+            else if (item.getItemId() == R.id.carNav){
+                // handle this layout
+            }
+            return false;
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return WindowInsetsCompat.CONSUMED;
         });
 
-
         recycler = findViewById(R.id.recyclerViewCars);
-
-
         recycler.setLayoutManager(new LinearLayoutManager(this));
         loadItems();
     }
 
+    private void filterText(String newText) {
+        List<Car> filterList = new ArrayList<>();
+        for (Car car : items) {
+            if (car.getBrand().toLowerCase().contains(newText.toLowerCase())) {
+                filterList.add(car);
+            }
+        }
+
+        if (filterList.isEmpty()) {
+
+            Toast.makeText(this, "No data found", Toast.LENGTH_LONG).show();
+        } else {
+            // Update the RecyclerView adapter with the filtered list
+            RecyclerViewAdapter filteredAdapter = new RecyclerViewAdapter(MainActivity.this, filterList);
+            recycler.setAdapter(filteredAdapter);
+        }
+    }
+
     private void loadItems() {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL1,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
-
-
                         try {
-
                             JSONArray array = new JSONArray(response);
                             for (int i = 0; i<array.length(); i++){
 
@@ -124,8 +177,6 @@ public class MainActivity extends AppCompatActivity {
                                 boolean isAva = isAvailable.equals(1);
                                 String carDetails = object.getString("carDetails");
                                 String image = object.getString("image");
-
-
 
 
 
@@ -155,10 +206,18 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
         queue.add(stringRequest);
-       /* Volley.newRequestQueue(MainActivity.this).add(stringRequest)*/;
+        /* Volley.newRequestQueue(MainActivity.this).add(stringRequest)*/;
 
+    }
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
+
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.activity_main;
     }
 }
 
@@ -207,4 +266,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this,viewCars.class);
         startActivity(intent);
     }
-}*/
+
+    */

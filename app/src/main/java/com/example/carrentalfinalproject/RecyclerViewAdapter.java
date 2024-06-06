@@ -1,8 +1,5 @@
 package com.example.carrentalfinalproject;
 
-
-
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +21,11 @@ public class RecyclerViewAdapter
     private List<Car> items;
 
 
+    public void setFilteredList(List<Car> filteredList){
+        this.items = filteredList;
+        notifyDataSetChanged();
+    }
+
     public RecyclerViewAdapter(Context context, List<Car> items){
         this.context = context;
         this.items = items;
@@ -31,9 +33,7 @@ public class RecyclerViewAdapter
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_row,
-                parent,
-                false);
-
+                parent, false);
         return new ViewHolder(v);
     }
 
@@ -43,6 +43,7 @@ public class RecyclerViewAdapter
         CardView cardView = holder.cardView;
         ImageView imageView = (ImageView) cardView.findViewById(R.id.cardImageView);
         Glide.with(context).load(car.getImage()).into(imageView);
+        imageView.setMinimumWidth(300);
         TextView name = (TextView)cardView.findViewById(R.id.BrandModelNameTextView);
         name.setText(car.getBrand()+" "+car.getModel());
         TextView seats = (TextView)cardView.findViewById(R.id.seatsTextView);

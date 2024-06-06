@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.carrentalfinalproject"
-        minSdk = 28
+        minSdk = 34
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -40,7 +40,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth)
-    implementation(libs.volley)
+    implementation ("com.android.volley:volley:1.2.1")
     implementation ("com.google.android.material:material:1.7.0")
     implementation ("com.github.bumptech.glide:glide:4.13.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.13.0")
@@ -50,5 +50,7 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
     implementation ("com.google.android.material:material:1.4.0")
+    implementation ("com.google.firebase:firebase-database:20.0.5")
+    implementation ("com.google.firebase:firebase-analytics:19.0.0")
 
 }

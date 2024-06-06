@@ -52,6 +52,7 @@ public class viewCars extends AppCompatActivity {
     private void loadImages() {
         String cat = "all";
         String url = "http://192.168.0.111/json/view.php?view=" + cat;
+        String url2 = "http://192.168.1.105/rest/index.php?index=" + cat;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url,
                 null, new Response.Listener<JSONArray>() {

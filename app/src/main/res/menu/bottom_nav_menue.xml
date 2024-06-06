@@ -3,18 +3,18 @@
 
     <item android:title="Home"
         android:icon="@drawable/baseline_home_24"
-        android:id="@+id/homeNav"/>
+        android:id="@+id/navigation_home"/>
 
     <item android:title="Search"
         android:icon="@drawable/baseline_search_24"
         android:id="@+id/searchNav"/>
 
     <item android:title="Rented Cars"
-        android:icon="@drawable/baseline_airplanemode_active_24"
+        android:icon="@drawable/baseline_directions_car_24"
         android:id="@+id/carNav"/>
 
     <item android:title="Account"
         android:icon="@drawable/baseline_account_circle_24"
-        android:id="@+id/accountNav"/>
+        android:id="@+id/navigation_account"/>
 
 </menu>
