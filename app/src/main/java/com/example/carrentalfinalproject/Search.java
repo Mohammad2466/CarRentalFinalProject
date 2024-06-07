@@ -1,5 +1,6 @@
 package com.example.carrentalfinalproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -10,6 +11,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +32,6 @@ public class Search extends BaseActivity{
         recycler = findViewById(R.id.recyclerViewCars);
         searchView.clearFocus();
 
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -42,18 +45,36 @@ public class Search extends BaseActivity{
             }
         });
 
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.navigation_home) {
+               Intent intent = new Intent(Search.this, MainActivity.class);
+               startActivity(intent);
+               finish();
+                return true;
+            } else if (item.getItemId() == R.id.navigation_account) {
+                Intent intent = new Intent(Search.this, MyAccount.class);
+                startActivity(intent);
+                finish();
+                return true;
+            } else if (item.getItemId() == R.id.searchNav){
+                return true;
+            }
+            else if (item.getItemId() == R.id.carNav){
+                Intent intent = new Intent(Search.this, Details.class);
+                startActivity(intent);
+                finish();
+                return true;
+            }
+            return false;
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
     }
-
-    @Override
-    protected int getLayoutResourceId() {
-        return R.layout.activity_search;
-    }
-
     private void filterText(String newText) {
         List<Car> filterList = new ArrayList<>();
         for (Car car : items) {
@@ -62,7 +83,6 @@ public class Search extends BaseActivity{
             }
         }
         if (filterList.isEmpty()) {
-            recycler.setVisibility(View.INVISIBLE);
             Toast.makeText(this, "No data found", Toast.LENGTH_LONG).show();
         } else {
             // Update the RecyclerView adapter with the filtered list
@@ -72,4 +92,9 @@ public class Search extends BaseActivity{
 
         }
     }
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.activity_search;
+    }
+
 }

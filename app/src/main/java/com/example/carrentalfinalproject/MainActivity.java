@@ -116,10 +116,15 @@ public class MainActivity extends BaseActivity{
                 return true;
             }
             else if (item.getItemId() == R.id.carNav){
-                // handle this layout
+                Intent intent = new Intent(MainActivity.this, Details.class);
+                startActivity(intent);
+                finish();
+                return true;
             }
             return false;
         });
+
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

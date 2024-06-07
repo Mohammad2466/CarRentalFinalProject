@@ -1,6 +1,7 @@
 package com.example.carrentalfinalproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,10 +51,25 @@ public class RecyclerViewAdapter
         seats.setText("Seats "+car.getSeats());
         TextView price = (TextView)cardView.findViewById(R.id.priceTextView);
         price.setText("Cost per day/"+car.getCostPerDay()+"");
+
+
         cardView.setOnClickListener( new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                //
+                Intent intent = new Intent(context, Details.class);
+                intent.putExtra("Car Name", car.getBrand());
+                intent.putExtra("Car Image", car.getImage());
+                intent.putExtra("Car Seats", car.getSeats());
+                intent.putExtra("Car Model Year", car.getMadeYear());
+                intent.putExtra("Car Cost", car.getCostPerDay());
+                intent.putExtra("Car Category", car.getCategory());
+                intent.putExtra("Car Model", car.getModel());
+                intent.putExtra("Car Max Speed", car.getMaxSpeed());
+                intent.putExtra("Car Engine Power", car.getEnginePower());
+                intent.putExtra("Car Availability", car.isAvailable());
+                intent.putExtra("Car Gear Type", car.getGearType());
+                intent.putExtra("Car Info", car.getCarDetails());
+                context.startActivity(intent);
             }
         });
     }

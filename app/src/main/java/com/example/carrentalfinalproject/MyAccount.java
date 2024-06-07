@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MyAccount extends BaseActivity {
 
@@ -29,6 +30,7 @@ public class MyAccount extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_my_account);
 
         EdgeToEdge.enable(this);
 
@@ -41,13 +43,49 @@ public class MyAccount extends BaseActivity {
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Session.close(getApplicationContext());
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(MyAccount.this, Login.class);
                 startActivity(intent);
                 finish();
             }
         });
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.navigation_home) {
+               Intent intent = new Intent(MyAccount.this, MainActivity.class);
+               startActivity(intent);
+               finish();
+                return true;
+
+            } else if (item.getItemId() == R.id.navigation_account) {
+                return true;
+
+            } else if (item.getItemId() == R.id.searchNav){
+                Intent intent = new Intent(MyAccount.this, Search.class);
+                startActivity(intent);
+                finish();
+                return true;
+
+            }
+            else if (item.getItemId() == R.id.carNav){
+                Intent intent = new Intent(MyAccount.this, Details.class);
+                startActivity(intent);
+                finish();
+                return true;
+            }
+            return false;
+        });
+
+        Intent intent = getIntent();
+        String nameStr = intent.getStringExtra("Name");
+        String emailStr = intent.getStringExtra("email");
+        int phoneNumberInt = intent.getIntExtra("Phone Number: %d", 0);
+
+        userName.setText(nameStr);
+        email.setText(emailStr);
+        phoneNumber.setText(String.format("Phone Number ", phoneNumberInt));
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -55,6 +93,7 @@ public class MyAccount extends BaseActivity {
             return insets;
         });
     }
+
 
     @Override
     protected int getLayoutResourceId() {
