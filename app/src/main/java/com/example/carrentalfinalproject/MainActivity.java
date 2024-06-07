@@ -173,7 +173,7 @@ public class MainActivity extends BaseActivity{
                                 String model = object.getString("model");
                                 int madeYear = Integer.parseInt(object.getString("madeYear"));
                                 int maxSpeed = Integer.parseInt(object.getString("maxSpeed"));
-                                double enginePower = Double.parseDouble(object.getString("enginePower"));
+                                int enginePower = Integer.parseInt(object.getString("enginePower"));
                                 double costPerDay = Double.parseDouble(object.getString("costPerDay"));
                                 int seats = Integer.parseInt(object.getString("seats"));
                                 String gearType = object.getString("gearType");

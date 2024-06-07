@@ -68,7 +68,7 @@ public class RecyclerViewAdapter
                 intent.putExtra("Car Engine Power", car.getEnginePower());
                 intent.putExtra("Car Availability", car.isAvailable());
                 intent.putExtra("Car Gear Type", car.getGearType());
-                intent.putExtra("Car Info", car.getCarDetails());
+                intent.putExtra("Car Info", car.getCarDetails().toString());
                 context.startActivity(intent);
             }
         });

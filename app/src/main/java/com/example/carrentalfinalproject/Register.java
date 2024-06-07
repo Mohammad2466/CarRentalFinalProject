@@ -2,7 +2,6 @@ package com.example.carrentalfinalproject;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -32,9 +31,8 @@ public class Register extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView tv_signIn;
     String textFullName, textEmail, textPhoneNumber, textPassword, textConfirmPassword;
-    int id;
-
     String emailPattern = "[a-zA-Z0-9-_-]+@[a-z]+\\.+[a-z]+";
+    int id;
 
     FirebaseDatabase rootNode;
     DatabaseReference reference;
@@ -42,10 +40,7 @@ public class Register extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser user = auth.getCurrentUser();
-
-        // Check if the user
         if (user != null) {
             Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -126,8 +121,6 @@ public class Register extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return WindowInsetsCompat.CONSUMED;
         });
-
-
     }
 
     private void signUpUser() {
@@ -142,6 +135,8 @@ public class Register extends AppCompatActivity {
                         if (firebaseUser != null) {
                             // Get user ID
                             String userId = firebaseUser.getUid();
+
+                            reference = FirebaseDatabase.getInstance().getReference("users");
 
                             // Create a User object to store in the database
                             User user = new User(textFullName, textPhoneNumber, textEmail, id);
@@ -170,5 +165,4 @@ public class Register extends AppCompatActivity {
                     }
                 });
     }
-
 }

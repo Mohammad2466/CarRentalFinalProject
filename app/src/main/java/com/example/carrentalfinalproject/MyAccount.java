@@ -24,7 +24,7 @@ public class MyAccount extends BaseActivity {
 
     ImageView imageView;
     TextView userName;
-    EditText email, phoneNumber;
+    TextView email, phoneNumber;
     Button logOut;
 
     @Override

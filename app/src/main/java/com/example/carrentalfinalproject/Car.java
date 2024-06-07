@@ -8,7 +8,7 @@ public class Car {
     private String model;
     private int madeYear;
     private int maxSpeed;
-    private double enginePower;
+    private int enginePower;
     private double costPerDay;
     private int seats;
     private String gearType;
@@ -16,7 +16,7 @@ public class Car {
     private String carDetails;
     private String image;
 
-    public Car(int id, String color, String category, String brand, String model, int madeYear, int maxSpeed, double enginePower, double costPerDay, int seats, String gearType, boolean isAvailable, String carDetails, String image) {
+    public Car(int id, String color, String category, String brand, String model, int madeYear, int maxSpeed, int enginePower, double costPerDay, int seats, String gearType, boolean isAvailable, String carDetails, String image) {
         Id = id;
         this.color = color;
         this.category = category;
@@ -61,7 +61,7 @@ public class Car {
         return maxSpeed;
     }
 
-    public double getEnginePower() {
+    public int getEnginePower() {
         return enginePower;
     }
 
@@ -113,7 +113,7 @@ public class Car {
         this.maxSpeed = maxSpeed;
     }
 
-    public void setEnginePower(double enginePower) {
+    public void setEnginePower(int enginePower) {
         this.enginePower = enginePower;
     }
 

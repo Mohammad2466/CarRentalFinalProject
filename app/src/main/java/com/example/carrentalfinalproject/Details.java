@@ -34,7 +34,7 @@ public class Details extends AppCompatActivity {
         int enginePower = intent.getIntExtra("Car Engine Power", 0);
         String gearType = intent.getStringExtra("Car Gear Type");
         boolean available = intent.getBooleanExtra("Car is Available", true);
-        String info = intent.getStringExtra("Car Information");
+        String info = intent.getStringExtra("Car Info");
 
         // Initialize views
         TextView carNameTextView = findViewById(R.id.BrandModelNameTextView);
@@ -58,7 +58,7 @@ public class Details extends AppCompatActivity {
         carCategory.setText(category);
         carModel.setText(model);
         carMaxSpeed.setText(String.format("Max Speed: %d km/h", maxSpeed));
-        carEnginePower.setText(String.format("Engine Power: %d HP", enginePower));
+        carEnginePower.setText(String.format("Engine Power: %d Cc", enginePower));
         carGearType.setText(gearType);
         carAvailable.setText("Is Available: " +String.format(available ? "available" : "not available"));
         carInfo.setText(info);
