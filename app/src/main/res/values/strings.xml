@@ -16,4 +16,6 @@
     <string name="restart_password">Restart Password</string>
     <string name="back">Back</string>
     <string name="view_items">View Items</string>
+    <string name="search">search</string>
+    <string name="choose_a_car">Choose a car</string>
 </resources>

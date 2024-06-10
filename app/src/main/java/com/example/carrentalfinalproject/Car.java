@@ -17,7 +17,7 @@ public class Car {
     private String image;
 
     public Car(int id, String color, String category, String brand, String model, int madeYear, int maxSpeed, int enginePower, double costPerDay, int seats, String gearType, boolean isAvailable, String carDetails, String image) {
-        Id = id;
+        this.Id = id;
         this.color = color;
         this.category = category;
         this.brand = brand;
