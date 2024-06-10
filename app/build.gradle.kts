@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.carrentalfinalproject"
-        minSdk = 34
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -46,7 +46,6 @@ dependencies {
     annotationProcessor ("com.github.bumptech.glide:compiler:4.13.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
-
     androidTestImplementation(libs.espresso.core)
     implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
     implementation ("com.google.android.material:material:1.4.0")

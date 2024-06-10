@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="RoundedCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">30dp</item>
+    </style>
+
+    <style name="MaterialCardViewStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">100dp</item>
+        <item name="cardCornerRadius">30dp</item>
+        <item name="contentPadding">10dp</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here -->
+        <item name="colorPrimary">@color/silv</item>
+        <item name="colorPrimaryDark">@color/silv</item>
+        <item name="colorAccent">@color/silv</item>
+    </style>
+
+</resources>

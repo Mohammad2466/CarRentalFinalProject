@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class RecyclerViewAdapter
@@ -47,7 +46,7 @@ public class RecyclerViewAdapter
         imageView.setMinimumWidth(300);
         TextView name = (TextView)cardView.findViewById(R.id.BrandModelNameTextView);
         name.setText(car.getBrand()+" "+car.getModel());
-        TextView seats = (TextView)cardView.findViewById(R.id.seatsTextView);
+        TextView seats = (TextView)cardView.findViewById(R.id.modelTextView);
         seats.setText("Seats "+car.getSeats());
         TextView price = (TextView)cardView.findViewById(R.id.priceTextView);
         price.setText("Cost per day/"+car.getCostPerDay()+"");
@@ -57,18 +56,18 @@ public class RecyclerViewAdapter
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(context, Details.class);
-                intent.putExtra("Car Name", car.getBrand());
+                intent.putExtra("Car Brand", car.getBrand());
                 intent.putExtra("Car Image", car.getImage());
-                intent.putExtra("Car Seats", car.getSeats());
-                intent.putExtra("Car Model Year", car.getMadeYear());
-                intent.putExtra("Car Cost", car.getCostPerDay());
+                intent.putExtra("Car Seats", car.getSeats()+"");
+                intent.putExtra("Car Model Year", car.getMadeYear()+"");
+                intent.putExtra("Car Cost", car.getCostPerDay()+"");
                 intent.putExtra("Car Category", car.getCategory());
                 intent.putExtra("Car Model", car.getModel());
-                intent.putExtra("Car Max Speed", car.getMaxSpeed());
-                intent.putExtra("Car Engine Power", car.getEnginePower());
-                intent.putExtra("Car Availability", car.isAvailable());
+                intent.putExtra("Car Max Speed", car.getMaxSpeed()+"");
+                intent.putExtra("Car Engine Power", car.getEnginePower()+"");
+                intent.putExtra("Car Availability", car.isAvailable()+"");
                 intent.putExtra("Car Gear Type", car.getGearType());
-                intent.putExtra("Car Info", car.getCarDetails().toString());
+                intent.putExtra("Car Info", car.getCarDetails());
                 context.startActivity(intent);
             }
         });

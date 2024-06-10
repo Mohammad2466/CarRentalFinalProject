@@ -1,131 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
-    android:outlineAmbientShadowColor="@color/black"
-    android:outlineSpotShadowColor="@color/black"
     tools:context=".Details">
 
-    <ImageView
-        android:id="@+id/cardImageView"
-        android:layout_width="match_parent"
-        android:layout_height="204dp"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/BrandModelNameTextView"
+    <LinearLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Brand"
-        android:gravity="center"
-        android:textSize="33dp"
-        android:layout_marginTop="10dp"/>
+        android:orientation="vertical"
+        android:outlineAmbientShadowColor="@color/black"
+        android:outlineSpotShadowColor="@color/black">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/cardImageView"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/BrandModelNameTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_min="330dp" />
+
+        <TextView
+            android:id="@+id/BrandModelNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Brand"
+            android:gravity="center"
+            android:textSize="33dp"
+            android:layout_marginTop="10dp"/>
+
+        <ListView
+            android:id="@+id/detailsListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_marginTop="10dp"
+            android:overScrollMode="always"
+            android:padding="10dp" />
+
+        <TextView
+            android:id="@+id/CarInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text=""
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/priceTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text=""
+            android:textColor="#ED0E0E"
+            android:textSize="30sp" />
 
 
-    <TextView
-        android:id="@+id/seatsTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="22dp"
-        android:text="Seats:"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="275dp"/>
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:text="Button" />
 
-    <TextView
-        android:id="@+id/carModelYear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Year Model:"
-        android:textSize="22dp"
-        android:layout_marginEnd="200dp"
-        android:layout_marginTop="10dp"/>
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/priceTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cost per Day"
-        android:textSize="22dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="180dp"/>
-
-    <TextView
-        android:id="@+id/carCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Category:"
-        android:textSize="22dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="150dp"/>
-
-    <TextView
-        android:id="@+id/carModel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Model:"
-        android:textSize="22dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="220dp"/>
-
-    <TextView
-        android:id="@+id/carMaxSpeed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Max Speed:"
-        android:textSize="22dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="175dp"/>
-
-    <TextView
-        android:id="@+id/carEnginePower"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Engine Power:"
-        android:textSize="22dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="145dp"/>
-
-    <TextView
-        android:id="@+id/carGearType"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Gear Type:"
-        android:textSize="22dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="220dp"/>
-
-    <TextView
-        android:id="@+id/carAvailbility"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Is Available:"
-        android:textSize="22dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="220dp"/>
-
-    <TextView
-        android:id="@+id/carInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Info:"
-        android:drawableLeft="@drawable/baseline_error_24"
-        android:textSize="22dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="220dp"/>
-
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:backgroundTint="@color/silv"
-        app:menu="@menu/bottom_nav_menue" />
-
-
-
-</LinearLayout>
+</ScrollView>
