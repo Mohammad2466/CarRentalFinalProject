@@ -68,6 +68,8 @@ public class RecyclerViewAdapter
                 intent.putExtra("Car Availability", car.isAvailable()+"");
                 intent.putExtra("Car Gear Type", car.getGearType());
                 intent.putExtra("Car Info", car.getCarDetails());
+                intent.putExtra("Car Pick Up Date", car.getPickUpDate());
+                intent.putExtra("Car Return Date", car.getReturnDate());
                 context.startActivity(intent);
             }
         });

@@ -43,8 +43,8 @@ public class MainActivity extends BaseActivity {
 
     // All url in one place call them from this activity
     //easier to make changes in one place
-    public static final String BASE_URL = "http://192.168.0.111/json/view.php";
-    public static final String addUser_URL = "http://192.168.0.111/json/addUser.php";
+    public static final String BASE_URL = "http://172.20.10.2/rest/view.php";
+    public static final String addUser_URL = "http://172.20.10.2/rest/addUser.php";
 
 
     @Override

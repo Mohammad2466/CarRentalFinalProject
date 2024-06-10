@@ -19,7 +19,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Objects.requireNonNull(getSupportActionBar()).hide();
+//        Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(getLayoutResourceId());
        // navBarStatus();
 
@@ -50,7 +50,11 @@ public abstract class BaseActivity extends AppCompatActivity {
                 finish();
                 return true;
             } else if (item.getItemId() == R.id.carNav) {
-                // handle this layout
+               Intent intent = new Intent(getApplicationContext(), BookingCars.class);
+               intent.putExtra("value", R.id.carNav);
+               startActivity(intent);
+               finish();
+               return true;
             }
             return false;
         });

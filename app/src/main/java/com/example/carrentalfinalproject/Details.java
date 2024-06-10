@@ -1,18 +1,25 @@
 package com.example.carrentalfinalproject;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.OnBackPressedDispatcher;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,9 +28,15 @@ import androidx.core.view.WindowInsetsCompat;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class Details extends BaseActivity {
+
+    private ImageView calendarStart, calendarEnd, startClock, endClock, backClick;
+    private TextView startDate, startTime, endDate, endTime, carName;
+    private String carImageUrl;
+    private Button senButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,19 +79,64 @@ public class Details extends BaseActivity {
         TextView carNameTextView = findViewById(R.id.BrandModelNameTextView);
         ImageView carImageView = findViewById(R.id.cardImageView);
 
-//        TextView carSeatsTextView = findViewById(R.id.seatsTextView);
-//        TextView carModelYear = findViewById(R.id.carModelYear);
-//        TextView carCategory = findViewById(R.id.carCategory);
-//        TextView carMaxSpeed = findViewById(R.id.carMaxSpeed);
-//        TextView carEnginePower = findViewById(R.id.carEnginePower);
-//        TextView carGearType = findViewById(R.id.carGearType);
-//        TextView carAvailable = findViewById(R.id.carAvailbility);
-//        TextView carInfo = findViewById(R.id.carInfo);
+        // Initialize UI components
+        calendarStart = findViewById(R.id.calendar_icon_1);
+        startClock = findViewById(R.id.clock_icon_1);
+        calendarEnd = findViewById(R.id.calendar_icon_2);
+        endClock = findViewById(R.id.clock_icon_2);
+
+        startDate = findViewById(R.id.pickupDate);
+        startTime = findViewById(R.id.pickupTime);
+        endDate = findViewById(R.id.returnDate);
+        endTime = findViewById(R.id.returnTime);
+
+        senButton = findViewById(R.id.btn_send);
+
+        // Event listeners for date and time pickers
+        calendarStart.setOnClickListener(v -> showDatePickerDialog(startDate));
+        startClock.setOnClickListener(v -> showTimePickerDialog(startTime));
+        calendarEnd.setOnClickListener(v -> showDatePickerDialog(endDate));
+        endClock.setOnClickListener(v -> showTimePickerDialog(endTime));
+        backClick = findViewById(R.id.iv_back);
+
+        senButton.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(Details.this);
+            builder.setMessage("Do you want to rent the car?")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", (dialog, which) -> {
+                        Toast.makeText(Details.this, "Rent process successful", Toast.LENGTH_SHORT).show();
+
+                        Intent intent1 = new Intent(Details.this, BookingCars.class);
+                        intent1.putExtra("Car Name", carBrand);
+                        intent1.putExtra("Car Image", carImage);
+                        intent1.putExtra("Pick Up Date", startDate.getText().toString() + " " + startTime.getText().toString());
+                        intent1.putExtra("Return Date", endDate.getText().toString() + " " + endTime.getText().toString());
+
+                        startActivity(intent1);
+                        finish();
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> {
+                        dialog.dismiss();
+                        Toast.makeText(Details.this, "Rent process canceled", Toast.LENGTH_SHORT).show();
+                    });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        });
+
+
 
         carNameTextView.setText(carBrand);
         Glide.with(this).load(carImage).into(carImageView);
 
 
+        backClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(Details.this, MainActivity.class);
+                startActivity(intent1);
+                finish();
+            }
+        });
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -109,5 +167,41 @@ public class Details extends BaseActivity {
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_details;
+    }
+
+    private void showDatePickerDialog(final TextView dateTextView) {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                Details.this,
+                (view, year1, monthOfYear, dayOfMonth) -> {
+                    calendar.set(year1, monthOfYear, dayOfMonth);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM dd", Locale.getDefault());
+                    String selectedDate = dateFormat.format(calendar.getTime());
+                    dateTextView.setText(selectedDate);
+                },
+                year, month, day);
+        datePickerDialog.show();
+    }
+
+    private void showTimePickerDialog(final TextView timeTextView) {
+        final Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                Details.this,
+                (view, hourOfDay, minute1) -> {
+                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    calendar.set(Calendar.MINUTE, minute1);
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+                    String selectedTime = timeFormat.format(calendar.getTime());
+                    timeTextView.setText(selectedTime);
+                },
+                hour, minute, false); // Set to 12-hour format
+        timePickerDialog.show();
     }
 }

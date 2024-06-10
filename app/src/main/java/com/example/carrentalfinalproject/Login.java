@@ -31,7 +31,7 @@ public class Login extends AppCompatActivity {
     private ProgressBar progrBar;
     private TextView tv_signUp, tv_forgetPass;
     private String textEmail, textPassword;
-    private String emailPattern = "[a-zA-Z0-9-_-]+@[a-z]+\\.+[a-z]+";
+    private String emailPattern = "[a-zA-Z0-9.-_-]+@[a-z]+\\.+[a-z]+";
 
     @Override
     public void onStart() {

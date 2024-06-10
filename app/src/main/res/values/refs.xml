@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="default_car_image" />
+    <drawable name="car_image" />
+</resources>

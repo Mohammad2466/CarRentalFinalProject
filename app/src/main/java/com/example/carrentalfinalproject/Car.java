@@ -16,6 +16,14 @@ public class Car {
     private String carDetails;
     private String image;
 
+    private String pickUpDate;
+    private String returnDate;
+
+
+    public Car(){
+
+    }
+
     public Car(int id, String color, String category, String brand, String model, int madeYear, int maxSpeed, int enginePower, double costPerDay, int seats, String gearType, boolean isAvailable, String carDetails, String image) {
         this.Id = id;
         this.color = color;
@@ -81,7 +89,7 @@ public class Car {
         return isAvailable;
     }
 
-    public String getCarDetails() {
+    public String  getCarDetails() {
         return carDetails;
     }
 
@@ -139,6 +147,22 @@ public class Car {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getPickUpDate() {
+        return pickUpDate;
+    }
+
+    public void setPickUpDate(String pickUpDate) {
+        this.pickUpDate = pickUpDate;
+    }
+
+    public String getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(String returnDate) {
+        this.returnDate = returnDate;
     }
 }
 
