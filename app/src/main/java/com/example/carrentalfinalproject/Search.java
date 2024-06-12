@@ -2,9 +2,17 @@ package com.example.carrentalfinalproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -34,6 +42,8 @@ public class Search extends BaseActivity{
     private static final String BASE_URL = "http://192.168.0.111/json/view.php";
     private RequestQueue queue;
 
+    ImageView filterImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +53,7 @@ public class Search extends BaseActivity{
         recycler = findViewById(R.id.recyclerViewSearch);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         searchView.clearFocus();
+        filterImage = findViewById(R.id.iv_filter);
 
         queue = Volley.newRequestQueue(this);
 
@@ -69,6 +80,14 @@ public class Search extends BaseActivity{
          navBarStatus();
 
         loadItems();
+
+        // Add click listener for filter image
+        filterImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFilterDialog();
+            }
+        });
 
     }
 
@@ -166,4 +185,74 @@ public class Search extends BaseActivity{
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
     }
+
+
+    private void openFilterDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_filter, null);
+        builder.setView(dialogView);
+
+        // Initialize filter views
+        Spinner categorySpinner = dialogView.findViewById(R.id.spinner_category);
+        EditText priceEditText = dialogView.findViewById(R.id.edittext_price);
+        Switch availabilitySwitch = dialogView.findViewById(R.id.switch_availability);
+        Spinner gearTypeSpinner = dialogView.findViewById(R.id.spinner_gear_type);
+        Button applyFiltersButton = dialogView.findViewById(R.id.button_apply_filters);
+
+        // Setup Spinners (e.g., populate them with data)
+        ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(this,
+                R.array.category_array, android.R.layout.simple_spinner_item);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(categoryAdapter);
+
+        ArrayAdapter<CharSequence> gearTypeAdapter = ArrayAdapter.createFromResource(this,
+                R.array.gear_type_array, android.R.layout.simple_spinner_item);
+        gearTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        gearTypeSpinner.setAdapter(gearTypeAdapter);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        applyFiltersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get filter values
+                String selectedCategory = categorySpinner.getSelectedItem().toString();
+                String priceText = priceEditText.getText().toString();
+                boolean isAvailable = availabilitySwitch.isChecked();
+                String selectedGearType = gearTypeSpinner.getSelectedItem().toString();
+
+                double maxPrice = priceText.isEmpty() ? Double.MAX_VALUE : Double.parseDouble(priceText);
+
+                // Apply filters
+                applyFilters(selectedCategory, maxPrice, isAvailable, selectedGearType);
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void applyFilters(String category, double maxPrice, boolean isAvailable, String gearType) {
+        List<Car> filteredCars = new ArrayList<>();
+        for (Car car : items) {
+            if ((category.equals("All") || car.getCategory().equals(category)) &&
+                    car.getCostPerDay() <= maxPrice &&
+                    car.isAvailable() == isAvailable &&
+                    (gearType.equals("All") || car.getGearType().equals(gearType))) {
+                filteredCars.add(car);
+            }
+        }
+
+        if (filteredCars.isEmpty()) {
+            recycler.setVisibility(View.INVISIBLE);
+            Toast.makeText(this, "No data found", Toast.LENGTH_LONG).show();
+        } else {
+            // Update the RecyclerView adapter with the filtered list
+            RecyclerViewAdapter filteredAdapter = new RecyclerViewAdapter(this, filteredCars);
+            recycler.setAdapter(filteredAdapter);
+            recycler.setVisibility(View.VISIBLE);
+        }
+    }
+
+
 }

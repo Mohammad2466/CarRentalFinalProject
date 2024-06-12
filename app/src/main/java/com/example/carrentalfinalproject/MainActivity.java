@@ -1,7 +1,12 @@
 package com.example.carrentalfinalproject;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +44,8 @@ public class MainActivity extends BaseActivity {
     private List<Car> items = new ArrayList<>();
     private RecyclerView recycler;
 
+    private ImageView contactUs;
+
     //private SearchView searchView;
 
     // All url in one place call them from this activity
@@ -56,6 +63,8 @@ public class MainActivity extends BaseActivity {
         queue = Volley.newRequestQueue(this);
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+        contactUs = findViewById(R.id.iv_contactUs);
+
 
         // Check if user is logged in, if not redirect to Login activity
         if (user == null) {
@@ -81,6 +90,17 @@ public class MainActivity extends BaseActivity {
         recycler = findViewById(R.id.recyclerViewCars);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         loadItems();
+
+        contactUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Start the ContactUs activity
+                Intent intent = new Intent(getApplicationContext(), ContactUs.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override

@@ -4,4 +4,9 @@
     <item name="drawer_layout" type="id" />
     <item name="nav_view" type="id" />
     <item name="toolbar" type="id" />
+    <item name="spinner_category" type="id" />
+    <item name="edittext_price" type="id" />
+    <item name="switch_availability" type="id" />
+    <item name="spinner_gear_type" type="id" />
+    <item name="button_apply_filters" type="id" />
 </resources>

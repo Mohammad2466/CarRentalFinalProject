@@ -18,4 +18,26 @@
     <string name="view_items">View Items</string>
     <string name="search">search</string>
     <string name="choose_a_car">Choose a car</string>
+    <string name="contact_us">contact us</string>
+    <string name="any_suggest">any suggest</string>
+    <string name="contact_description">"If you have any questions, need assistance, or would like more information about our products and services, please don't hesitate to reach out to us. You can contact us on the email or a phone number</string>
+
+    <string-array name="category_array">
+        <item>All</item>
+        <item>Coupe</item>
+        <item>SUV</item>
+        <item>Convertible</item>
+        <item>Sedan</item>
+        <item>Sports</item>
+        <item>Hatchback</item>
+
+    </string-array>
+
+    <string-array name="gear_type_array">
+        <item>All</item>
+        <item>Manual</item>
+        <item>Automatic</item>
+
+    </string-array>
+
 </resources>
